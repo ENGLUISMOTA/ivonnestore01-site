@@ -7,6 +7,7 @@ interface FormData {
   whatsapp: string;
   instagram: string;
   acceptMarketing: boolean;
+  acceptTerms: boolean;
 }
 
 // ─── CONFIGURAÇÕES DO CUPOM ────────────────────────────────────────────────
@@ -50,7 +51,17 @@ export default function CouponForm() {
   const [couponCode, setCouponCode] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
+  const [showTermsModal, setShowTermsModal] = useState(false);
+
+  const { register, handleSubmit, formState: { errors }, reset, watch } = useForm<FormData>({
+    defaultValues: {
+      acceptMarketing: false,
+      acceptTerms: false
+    }
+  });
+
+  const acceptMarketing = watch('acceptMarketing');
+  const acceptTerms = watch('acceptTerms');
 
   const generateCouponCode = () => {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sem caracteres ambíguos
@@ -161,12 +172,36 @@ export default function CouponForm() {
                 })}
                 className="mt-1 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
               />
-              <label htmlFor="acceptMarketing" className="cursor-pointer text-sm sm:text-base">
+              <label htmlFor="acceptMarketing" className="cursor-pointer text-sm sm:text-base text-gray-700">
                 Aceito receber informações sobre novidades e promoções
               </label>
             </div>
             {errors.acceptMarketing && (
               <p className="text-red-600 text-sm -mt-2">{errors.acceptMarketing.message}</p>
+            )}
+
+            <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+              <input
+                id="acceptTerms"
+                type="checkbox"
+                {...register('acceptTerms', {
+                  required: 'Você precisa aceitar os termos da promoção'
+                })}
+                className="mt-1 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
+              />
+              <label htmlFor="acceptTerms" className="cursor-pointer text-sm sm:text-base text-gray-700">
+                Aceito os <span 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setShowTermsModal(true);
+                  }}
+                  className="font-bold text-blue-600 hover:text-blue-800 underline decoration-2 cursor-pointer"
+                >termos</span> da promoção
+              </label>
+            </div>
+            {errors.acceptTerms && (
+              <p className="text-red-600 text-sm -mt-2">{errors.acceptTerms.message}</p>
             )}
 
             {submitError && (
@@ -177,7 +212,7 @@ export default function CouponForm() {
 
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={!acceptMarketing || !acceptTerms || isSubmitting}
               className="w-full bg-blue-600 text-white py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {isSubmitting ? 'Gerando cupom...' : 'Gerar Meu Cupom'}
@@ -205,6 +240,30 @@ export default function CouponForm() {
           </div>
         )}
       </div>
+
+      {showTermsModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 animate-in fade-in zoom-in-95 duration-200">
+            <h3 className="text-xl font-bold text-gray-900 mb-3">Termos da Promoção</h3>
+            <div className="space-y-4 text-gray-600 text-sm sm:text-base leading-relaxed">
+              <p>Para garantir o seu cupom de 10% de desconto, é obrigatório cumprir o seguinte termo:</p>
+              <div className="p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg text-blue-900 font-semibold flex items-center gap-3">
+                <span className="text-xl">📸</span>
+                <span>Seguir o perfil da loja no Instagram!</span>
+              </div>
+              <p className="text-xs text-gray-500">
+                O perfil do Instagram inserido no cadastro será verificado no momento de aplicar o desconto em sua compra.
+              </p>
+            </div>
+            <button
+              onClick={() => setShowTermsModal(false)}
+              className="mt-6 w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            >
+              Entendi e Aceito
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
