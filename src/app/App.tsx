@@ -72,7 +72,7 @@ export default function App() {
             <p className="text-sm sm:text-base text-gray-400">&copy; 2026 Jumper - Loja de Roupas. Todos os direitos reservados.</p>
             <div className="mt-4">
               <a
-                href="./admin.html"
+                href="/admin"
                 className="inline-flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-400 transition-colors"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
