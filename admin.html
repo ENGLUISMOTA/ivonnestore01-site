@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jumper — Painel Administrativo</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f1f5f9;
+      color: #1e293b;
+      min-height: 100vh;
+    }
+
+    /* ── LOGIN ─────────────────────────────── */
+    #login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+    .login-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .login-logo {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #1d4ed8;
+      letter-spacing: -1px;
+      margin-bottom: 0.25rem;
+    }
+    .login-sub { color: #64748b; font-size: 0.9rem; margin-bottom: 2rem; }
+    .login-card label {
+      display: block;
+      text-align: left;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 0.35rem;
+    }
+    .login-card input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .login-card input:focus { border-color: #3b82f6; }
+    .btn-primary {
+      width: 100%;
+      background: #1d4ed8;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.85rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .btn-primary:hover { background: #1e40af; }
+    .btn-primary:disabled { background: #93c5fd; cursor: not-allowed; }
+    #login-error {
+      color: #dc2626;
+      font-size: 0.85rem;
+      margin-top: 0.75rem;
+      display: none;
+    }
+
+    /* ── DASHBOARD ─────────────────────────── */
+    #dashboard { display: none; }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .header-brand { font-size: 1.2rem; font-weight: 800; color: #1d4ed8; }
+    .header-right { display: flex; gap: 0.75rem; align-items: center; }
+    .badge-user {
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.3rem 0.75rem;
+      border-radius: 99px;
+    }
+    .btn-logout {
+      background: transparent;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 0.4rem 0.9rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: #64748b;
+      transition: all .2s;
+    }
+    .btn-logout:hover { border-color: #dc2626; color: #dc2626; }
+
+    main { padding: 1.5rem; max-width: 1200px; margin: 0 auto; }
+
+    /* ── SETTINGS CARD ─────────────────────── */
+    .settings-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .settings-card h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media(max-width: 600px) { .settings-grid { grid-template-columns: 1fr; } }
+    .settings-grid label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #475569;
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+    .settings-grid input {
+      width: 100%;
+      padding: 0.65rem 0.9rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .settings-grid input:focus { border-color: #3b82f6; }
+    .btn-save {
+      margin-top: 1rem;
+      background: #0f766e;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.65rem 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .btn-save:hover { background: #115e59; }
+    .save-msg { display: none; color: #0f766e; font-size: 0.85rem; margin-left: 0.75rem; font-weight: 600; }
+
+    /* ── TABLE CARD ────────────────────────── */
+    .table-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .table-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .table-header h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    .table-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .btn-secondary {
+      background: #f1f5f9;
+      border: none;
+      border-radius: 8px;
+      padding: 0.55rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: #475569;
+      transition: background .2s;
+    }
+    .btn-secondary:hover { background: #e2e8f0; }
+    .btn-export {
+      background: #1d4ed8;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.55rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .btn-export:hover { background: #1e40af; }
+
+    .search-row {
+      padding: 0.75rem 1.5rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .search-row input {
+      width: 100%;
+      max-width: 360px;
+      padding: 0.6rem 1rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .search-row input:focus { border-color: #3b82f6; }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    thead th {
+      background: #f8fafc;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid #e2e8f0;
+      white-space: nowrap;
+    }
+    tbody tr { border-bottom: 1px solid #f1f5f9; transition: background .1s; }
+    tbody tr:hover { background: #f8fafc; }
+    tbody td { padding: 0.85rem 1rem; vertical-align: middle; }
+    .td-coupon {
+      font-family: 'Courier New', monospace;
+      font-weight: 700;
+      color: #1d4ed8;
+      letter-spacing: 1px;
+    }
+    .btn-edit-coupon {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 6px;
+      padding: 0.3rem 0.65rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #1d4ed8;
+      cursor: pointer;
+      transition: all .15s;
+      margin-left: 0.5rem;
+    }
+    .btn-edit-coupon:hover { background: #dbeafe; }
+    .badge-marketing {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-yes { background: #dcfce7; color: #15803d; }
+    .badge-no  { background: #fee2e2; color: #dc2626; }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #94a3b8;
+    }
+    .empty-state p { margin-top: 0.5rem; font-size: 0.9rem; }
+
+    #loading-row td { text-align: center; padding: 2rem; color: #94a3b8; }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    @media(max-width: 500px) { .stats-row { grid-template-columns: 1fr; } }
+    .stat-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .stat-number { font-size: 2rem; font-weight: 800; color: #1d4ed8; }
+    .stat-label  { font-size: 0.8rem; color: #64748b; margin-top: 0.25rem; font-weight: 500; }
+
+    /* ── MODAL EDIÇÃO ───────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 14px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .modal h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .modal p  { font-size: 0.85rem; color: #64748b; margin-bottom: 1.25rem; }
+    .modal label { font-size: 0.82rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.35rem; }
+    .modal input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: 'Courier New', monospace;
+      font-weight: 700;
+      text-transform: uppercase;
+      outline: none;
+      letter-spacing: 1px;
+    }
+    .modal input:focus { border-color: #3b82f6; }
+    .modal-actions { display: flex; gap: 0.75rem; margin-top: 1.25rem; justify-content: flex-end; }
+    .btn-cancel { background: #f1f5f9; border: none; border-radius: 8px; padding: 0.65rem 1.2rem; cursor: pointer; font-weight: 600; color: #475569; }
+    .btn-confirm { background: #1d4ed8; color: #fff; border: none; border-radius: 8px; padding: 0.65rem 1.2rem; cursor: pointer; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     TELA DE LOGIN
+══════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">Jumper</div>
+    <div class="login-sub">Painel Administrativo</div>
+
+    <div>
+      <label for="input-user">Usuário</label>
+      <input type="text" id="input-user" placeholder="funcionario" autocomplete="username" />
+    </div>
+    <div>
+      <label for="input-pass">Senha</label>
+      <input type="password" id="input-pass" placeholder="••••••••" autocomplete="current-password" />
+    </div>
+    <button class="btn-primary" id="btn-login" onclick="doLogin()">Entrar</button>
+    <div id="login-error">Usuário ou senha incorretos.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     DASHBOARD
+══════════════════════════════════════════ -->
+<div id="dashboard">
+  <header>
+    <span class="header-brand">⚡ Jumper Admin</span>
+    <div class="header-right">
+      <span class="badge-user" id="badge-username"></span>
+      <button class="btn-logout" onclick="doLogout()">Sair</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-number" id="stat-total">—</div>
+        <div class="stat-label">Cadastros totais</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-today">—</div>
+        <div class="stat-label">Hoje</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-marketing">—</div>
+        <div class="stat-label">Aceitaram marketing</div>
+      </div>
+    </div>
+
+    <!-- Configurações do cupom -->
+    <div class="settings-card">
+      <h2>⚙️ Configurações do Cupom</h2>
+      <div class="settings-grid">
+        <div>
+          <label>Prefixo do código gerado</label>
+          <input type="text" id="cfg-prefix" placeholder="JUMPER" />
+        </div>
+        <div>
+          <label>Data de validade exibida ao cliente</label>
+          <input type="text" id="cfg-validity" placeholder="31/07/2026" />
+        </div>
+      </div>
+      <button class="btn-save" onclick="saveConfig()">Salvar configurações</button>
+      <span class="save-msg" id="save-msg">✓ Salvo!</span>
+      <p style="margin-top:0.75rem;font-size:0.78rem;color:#94a3b8;">
+        ⚠️ Estas configurações ficam salvas neste navegador. Para alterar no código-fonte, edite as constantes em <code>CouponForm.tsx</code>.
+      </p>
+    </div>
+
+    <!-- Tabela de clientes -->
+    <div class="table-card">
+      <div class="table-header">
+        <h2>👥 Clientes Cadastrados</h2>
+        <div class="table-actions">
+          <button class="btn-secondary" onclick="loadRegistrations()">↻ Atualizar</button>
+          <button class="btn-export" onclick="exportCSV()">⬇ Exportar CSV</button>
+        </div>
+      </div>
+      <div class="search-row">
+        <input type="text" id="search-input" placeholder="Buscar por nome, WhatsApp ou Instagram…" oninput="filterTable()" />
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nome</th>
+              <th>WhatsApp</th>
+              <th>Instagram</th>
+              <th>Cupom</th>
+              <th>Marketing</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <tr id="loading-row"><td colspan="7">Carregando…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ── Modal edição de cupom ── -->
+<div class="modal-overlay" id="edit-modal">
+  <div class="modal">
+    <h3>Editar código do cupom</h3>
+    <p id="modal-client-name">Cliente: —</p>
+    <label for="modal-coupon-input">Novo código</label>
+    <input type="text" id="modal-coupon-input" maxlength="20" oninput="this.value=this.value.toUpperCase()" />
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-confirm" onclick="confirmEdit()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════════════
+//  ⚠️  CONFIGURE AQUI — Cole sua URL e chave do Supabase
+//  Veja SETUP_SUPABASE.md para instruções detalhadas
+// ════════════════════════════════════════════════════════════════════════
+const SUPABASE_URL      = 'https://srgkbigqtctyzqyvyiis.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyZ2tiaWdxdGN0eXpxeXZ5aWlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDAxNTQsImV4cCI6MjA5NTMxNjE1NH0.jFMb8st5JI0VIZylaZ2jw5i_ld5L4ittGakFVtbBcKU';
+
+// ════════════════════════════════════════════════════════════════════════
+//  USUÁRIOS DO PAINEL — adicione ou remova funcionários aqui
+//  Formato: { user: 'usuario', pass: 'senha', label: 'Nome Exibido' }
+// ════════════════════════════════════════════════════════════════════════
+const USERS = [
+  { user: 'admin',       pass: 'jumper2026',  label: 'Administrador' },
+  { user: 'funcionario', pass: 'loja@jumper', label: 'Funcionário'   },
+];
+// ════════════════════════════════════════════════════════════════════════
+
+let allData = [];
+let editingId = null;
+
+// ── Autenticação ────────────────────────────────────────────────────────
+function doLogin() {
+  const u = document.getElementById('input-user').value.trim();
+  const p = document.getElementById('input-pass').value;
+  const found = USERS.find(x => x.user === u && x.pass === p);
+  if (!found) {
+    document.getElementById('login-error').style.display = 'block';
+    return;
+  }
+  sessionStorage.setItem('jumper_user', found.label);
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('badge-username').textContent = found.label;
+  loadConfig();
+  loadRegistrations();
+}
+
+function doLogout() {
+  sessionStorage.removeItem('jumper_user');
+  location.reload();
+}
+
+// Auto-login se já autenticado nesta sessão
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = sessionStorage.getItem('jumper_user');
+  if (saved) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('badge-username').textContent = saved;
+    loadConfig();
+    loadRegistrations();
+  }
+  document.getElementById('input-pass').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+});
+
+// ── Configurações ───────────────────────────────────────────────────────
+function loadConfig() {
+  document.getElementById('cfg-prefix').value   = localStorage.getItem('jumper_prefix')   || 'JUMPER';
+  document.getElementById('cfg-validity').value = localStorage.getItem('jumper_validity') || '31/07/2026';
+}
+
+function saveConfig() {
+  localStorage.setItem('jumper_prefix',   document.getElementById('cfg-prefix').value.trim());
+  localStorage.setItem('jumper_validity', document.getElementById('cfg-validity').value.trim());
+  const msg = document.getElementById('save-msg');
+  msg.style.display = 'inline';
+  setTimeout(() => msg.style.display = 'none', 2500);
+}
+
+// ── Supabase: carregar registros ─────────────────────────────────────────
+async function loadRegistrations() {
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = '<tr id="loading-row"><td colspan="7" style="text-align:center;padding:2rem;color:#94a3b8;">Carregando…</td></tr>';
+
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/coupon_registrations?select=*&order=created_at.desc`,
+      { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } }
+    );
+    if (!res.ok) throw new Error(await res.text());
+    allData = await res.json();
+    renderTable(allData);
+    updateStats(allData);
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;color:#dc2626;">
+      Erro ao carregar: ${err.message}<br><small>Verifique as configurações do Supabase.</small>
+    </td></tr>`;
+  }
+}
+
+// ── Renderizar tabela ────────────────────────────────────────────────────
+function renderTable(data) {
+  const tbody = document.getElementById('table-body');
+  if (data.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7">
+      <div class="empty-state">📋 <p>Nenhum cadastro encontrado.</p></div>
+    </td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map((r, i) => `
+    <tr>
+      <td style="color:#94a3b8;font-size:0.78rem;">${i + 1}</td>
+      <td style="font-weight:600;">${esc(r.name)}</td>
+      <td><a href="https://wa.me/55${r.whatsapp.replace(/\D/g,'')}" target="_blank"
+             style="color:#25d366;font-weight:600;text-decoration:none;">📱 ${esc(r.whatsapp)}</a></td>
+      <td><a href="https://instagram.com/${r.instagram.replace('@','')}" target="_blank"
+             style="color:#e1306c;font-weight:600;text-decoration:none;">@${esc(r.instagram.replace('@',''))}</a></td>
+      <td>
+        <span class="td-coupon">${esc(r.coupon_code)}</span>
+        <button class="btn-edit-coupon" onclick="openModal('${r.id}','${esc(r.name)}','${esc(r.coupon_code)}')">✏️</button>
+      </td>
+      <td>
+        <span class="badge-marketing ${r.marketing_consent ? 'badge-yes' : 'badge-no'}">
+          ${r.marketing_consent ? 'Sim' : 'Não'}
+        </span>
+      </td>
+      <td style="color:#64748b;white-space:nowrap;font-size:0.82rem;">${formatDate(r.created_at)}</td>
+    </tr>
+  `).join('');
+}
+
+// ── Stats ────────────────────────────────────────────────────────────────
+function updateStats(data) {
+  const today = new Date().toISOString().slice(0,10);
+  document.getElementById('stat-total').textContent     = data.length;
+  document.getElementById('stat-today').textContent     = data.filter(r => r.created_at?.startsWith(today)).length;
+  document.getElementById('stat-marketing').textContent = data.filter(r => r.marketing_consent).length;
+}
+
+// ── Busca ────────────────────────────────────────────────────────────────
+function filterTable() {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  const filtered = allData.filter(r =>
+    r.name?.toLowerCase().includes(q) ||
+    r.whatsapp?.includes(q) ||
+    r.instagram?.toLowerCase().includes(q)
+  );
+  renderTable(filtered);
+}
+
+// ── Modal edição de cupom ────────────────────────────────────────────────
+function openModal(id, name, coupon) {
+  editingId = id;
+  document.getElementById('modal-client-name').textContent = `Cliente: ${name}`;
+  document.getElementById('modal-coupon-input').value = coupon;
+  document.getElementById('edit-modal').classList.add('open');
+}
+function closeModal() {
+  editingId = null;
+  document.getElementById('edit-modal').classList.remove('open');
+}
+
+async function confirmEdit() {
+  const newCode = document.getElementById('modal-coupon-input').value.trim().toUpperCase();
+  if (!newCode) return;
+
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/coupon_registrations?id=eq.${editingId}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Prefer': 'return=minimal',
+        },
+        body: JSON.stringify({ coupon_code: newCode }),
+      }
+    );
+    if (!res.ok) throw new Error(await res.text());
+    closeModal();
+    await loadRegistrations();
+  } catch (err) {
+    alert('Erro ao atualizar cupom: ' + err.message);
+  }
+}
+
+// ── Exportar CSV ─────────────────────────────────────────────────────────
+function exportCSV() {
+  if (!allData.length) return;
+  const cols = ['name','whatsapp','instagram','coupon_code','marketing_consent','created_at'];
+  const header = ['Nome','WhatsApp','Instagram','Cupom','Marketing','Data'];
+  const rows = [header, ...allData.map(r => cols.map(c => `"${String(r[c]??'').replace(/"/g,'""')}"`)  )];
+  const csv  = rows.map(r => r.join(',')).join('\n');
+  const blob = new Blob(['\ufeff'+csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = `jumper_clientes_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+}
+
+// ── Helpers ──────────────────────────────────────────────────────────────
+function esc(s) { return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function formatDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'});
+}
+</script>
+</body>
+</html>
