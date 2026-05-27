@@ -42,7 +42,7 @@ export default function LocationSection({ imageUrl, imageAlt, reverse = false }:
             <div>
               <h3 className="font-semibold mb-1 text-sm sm:text-base">Contato</h3>
               <p className="text-sm sm:text-base">(91) 98765-4321</p>
-              <p className="text-sm sm:text-base">contato@lojajumper.com.br</p>
+              <p className="text-sm sm:text-base">contato@ivonnestore.com.br</p>
             </div>
           </div>
         </div>

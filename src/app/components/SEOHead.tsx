@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 export default function SEOHead() {
   useEffect(() => {
-    document.title = 'Jumper - Loja de Roupas no Guamá, Belém/PA | Moda com Propósito';
+    document.title = 'Ivonne Store - Loja de Roupas no Guamá, Belém/PA | O lugar de comprar barato';
 
     const setMetaTag = (name: string, content: string, isProperty = false) => {
       const attribute = isProperty ? 'property' : 'name';
@@ -15,10 +15,10 @@ export default function SEOHead() {
       meta.setAttribute('content', content);
     };
 
-    setMetaTag('description', 'Jumper - Loja de roupas no Guamá, Belém/PA. Moda acessível e de qualidade com entrega em Belém. Venha conhecer nossa coleção! Descontos especiais para novos clientes.');
-    setMetaTag('keywords', 'loja de roupas Belém, moda Guamá, roupas Belém PA, loja no Guamá, moda acessível Belém, roupas femininas Belém, roupas masculinas Belém, Jumper Belém');
+    setMetaTag('description', 'Ivonne Store - Moda masculina e feminina no Guamá, Belém/PA com a melhor relação custo-benefício. Venha conferir nossa coleção atualizada gastando pouco!');
+    setMetaTag('keywords', 'loja de roupas Belém, moda Guamá, roupas Belém PA, loja no Guamá, moda acessível Belém, roupas femininas Belém, roupas masculinas Belém, Ivonne Store, Ivonne Store Belém');
 
-    setMetaTag('og:title', 'Jumper - Loja de Roupas no Guamá, Belém/PA', true);
+    setMetaTag('og:title', 'Ivonne Store - Loja de Roupas no Guamá, Belém/PA', true);
     setMetaTag('og:description', 'Moda acessível e de qualidade no coração de Belém. Ganhe 10% de desconto na primeira compra!', true);
     setMetaTag('og:type', 'website', true);
     setMetaTag('og:locale', 'pt_BR', true);
@@ -33,8 +33,8 @@ export default function SEOHead() {
     schemaScript.textContent = JSON.stringify({
       "@context": "https://schema.org",
       "@type": "ClothingStore",
-      "name": "Jumper - Loja de Roupas",
-      "description": "Loja de roupas no Guamá, Belém/PA com moda acessível e de qualidade",
+      "name": "Ivonne Store - Loja de Roupas",
+      "description": "Moda masculina e feminina no Guamá, Belém/PA com a melhor relação custo-benefício da região",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Rua das Flores, 123",

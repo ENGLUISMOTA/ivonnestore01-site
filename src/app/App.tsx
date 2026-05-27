@@ -18,19 +18,19 @@ export default function App() {
       <div className="max-w-7xl mx-auto py-12 sm:py-16 space-y-12 sm:space-y-20 px-4">
         <ProductSection
           imageUrl="https://images.unsplash.com/photo-1532453288672-3a27e9be9efd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-          imageAlt="Roupas na loja Jumper em Belém"
+          imageAlt="Roupas na loja Ivonne Store em Belém"
           reverse={false}
         />
 
         <LocationSection
           imageUrl="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-          imageAlt="Interior da loja Jumper no Guamá"
+          imageAlt="Interior da loja Ivonne Store no Guamá"
           reverse={true}
         />
 
         <ProductSection
           imageUrl="https://images.unsplash.com/photo-1540221652346-e5dd6b50f3e7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-          imageAlt="Coleção de roupas Jumper"
+          imageAlt="Coleção de roupas Ivonne Store"
           reverse={false}
         />
       </div>
@@ -45,9 +45,9 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mb-6 sm:mb-8">
             <div>
-              <h3 className="text-lg sm:text-xl mb-3 sm:mb-4">Jumper</h3>
+              <h3 className="text-lg sm:text-xl mb-3 sm:mb-4">Ivonne Store</h3>
               <p className="text-sm sm:text-base text-gray-400">
-                Loja de roupas no Guamá, Belém/PA. Moda com propósito e qualidade acessível.
+                Loja de roupas no Guamá, Belém/PA. O lugar de comprar barato!
               </p>
             </div>
             <div>
@@ -59,7 +59,7 @@ export default function App() {
             <div className="sm:col-span-2 md:col-span-1">
               <h3 className="text-lg sm:text-xl mb-3 sm:mb-4">Redes Sociais</h3>
               <div className="flex gap-4">
-                <a href="https://instagram.com/lojajumper" target="_blank" rel="noopener noreferrer" className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors">
+                <a href="https://instagram.com/ivonnestore" target="_blank" rel="noopener noreferrer" className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors">
                   Instagram
                 </a>
                 <a href="https://wa.me/5591987654321" target="_blank" rel="noopener noreferrer" className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors">
@@ -69,7 +69,7 @@ export default function App() {
             </div>
           </div>
           <div className="text-center border-t border-gray-800 pt-6 sm:pt-8">
-            <p className="text-sm sm:text-base text-gray-400">&copy; 2026 Jumper - Loja de Roupas. Todos os direitos reservados.</p>
+            <p className="text-sm sm:text-base text-gray-400">&copy; 2026 Ivonne Store - Loja de Roupas. Todos os direitos reservados.</p>
             <div className="mt-4">
               <a
                 href="/admin"

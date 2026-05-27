@@ -15,14 +15,14 @@ export default function VideoHero() {
       </video>
       <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
         <div className="text-center text-white px-4 max-w-4xl">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-4">
-            Jumper - Moda com Propósito
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-4 font-bold">
+            Ivonne Store
           </h1>
-          <p className="text-lg sm:text-xl md:text-2xl mb-2">
-            Sua loja de roupas no Guamá, Belém
+          <p className="text-lg sm:text-xl md:text-2xl mb-2 font-medium">
+            O lugar de comprar barato!
           </p>
-          <p className="text-base sm:text-lg md:text-xl">
-            Qualidade e estilo acessíveis para você
+          <p className="text-base sm:text-lg md:text-xl text-gray-200">
+            Moda masculina e feminina com a melhor relação custo-benefício da região
           </p>
         </div>
       </div>

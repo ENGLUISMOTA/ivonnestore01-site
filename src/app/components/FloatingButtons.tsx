@@ -2,7 +2,7 @@ import { Instagram, MapPin } from 'lucide-react';
 
 export default function FloatingButtons() {
   const handleInstagramClick = () => {
-    window.open('https://instagram.com/lojajumper', '_blank');
+    window.open('https://instagram.com/ivonnestore', '_blank');
   };
 
   const handleLocationClick = () => {

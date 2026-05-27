@@ -1,4 +1,4 @@
-# Configuração do Supabase — Loja Jumper
+# Configuração do Supabase — Ivonne Store
 
 Siga os passos abaixo **uma única vez** para ativar o sistema de cadastros.
 
@@ -8,7 +8,7 @@ Siga os passos abaixo **uma única vez** para ativar o sistema de cadastros.
 
 1. Acesse **https://supabase.com** e crie uma conta gratuita.
 2. Clique em **"New project"**.
-3. Dê um nome (ex: `jumper-loja`), escolha uma senha forte e selecione a região **South America (São Paulo)**.
+3. Dê um nome (ex: `ivonne-loja`), escolha uma senha forte e selecione a região **South America (São Paulo)**.
 4. Aguarde ~2 minutos até o projeto ficar pronto.
 
 ---
@@ -82,7 +82,7 @@ Localize as mesmas linhas no início do bloco `<script>` e substitua da mesma fo
 ### Via código (permanente)
 Em `src/app/components/CouponForm.tsx`, edite:
 ```ts
-const COUPON_PREFIX      = 'JUMPER';       // ex: 'JUMPER', 'PROMO', 'SALE'
+const COUPON_PREFIX      = 'IVONNE';       // ex: 'IVONNE', 'PROMO', 'SALE'
 const COUPON_VALID_UNTIL = '31/07/2026';   // data que aparece para o cliente
 ```
 
@@ -97,8 +97,8 @@ o prefixo e a validade sem mexer no código — útil para promoções rápidas.
 Em `admin.html`, localize o array `USERS`:
 ```js
 const USERS = [
-  { user: 'admin',       pass: 'jumper2026',  label: 'Administrador' },
-  { user: 'funcionario', pass: 'loja@jumper', label: 'Funcionário'   },
+  { user: 'admin',       pass: 'ivonne2026',  label: 'Administrador' },
+  { user: 'funcionario', pass: 'loja@ivonne', label: 'Funcionário'   },
 ];
 ```
 Adicione ou remova entradas conforme necessário.

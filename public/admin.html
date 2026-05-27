@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jumper — Painel Administrativo</title>
+  <title>Ivonne Store — Painel Administrativo</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -354,7 +354,7 @@
 ══════════════════════════════════════════ -->
 <div id="login-screen">
   <div class="login-card">
-    <div class="login-logo">Jumper</div>
+    <div class="login-logo">Ivonne Store</div>
     <div class="login-sub">Painel Administrativo</div>
 
     <div>
@@ -375,7 +375,7 @@
 ══════════════════════════════════════════ -->
 <div id="dashboard">
   <header>
-    <span class="header-brand">⚡ Jumper Admin</span>
+    <span class="header-brand">⚡ Ivonne Store Admin</span>
     <div class="header-right">
       <span class="badge-user" id="badge-username"></span>
       <button class="btn-logout" onclick="doLogout()">Sair</button>
@@ -405,7 +405,7 @@
       <div class="settings-grid">
         <div>
           <label>Prefixo do código gerado</label>
-          <input type="text" id="cfg-prefix" placeholder="JUMPER" />
+          <input type="text" id="cfg-prefix" placeholder="IVONNE" />
         </div>
         <div>
           <label>Data de validade exibida ao cliente</label>
@@ -480,8 +480,8 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 //  Formato: { user: 'usuario', pass: 'senha', label: 'Nome Exibido' }
 // ════════════════════════════════════════════════════════════════════════
 const USERS = [
-  { user: 'admin',       pass: 'jumper2026',  label: 'Administrador' },
-  { user: 'funcionario', pass: 'loja@jumper', label: 'Funcionário'   },
+  { user: 'admin',       pass: 'ivonne2026',  label: 'Administrador' },
+  { user: 'funcionario', pass: 'loja@ivonne', label: 'Funcionário'   },
 ];
 // ════════════════════════════════════════════════════════════════════════
 
@@ -497,7 +497,7 @@ function doLogin() {
     document.getElementById('login-error').style.display = 'block';
     return;
   }
-  sessionStorage.setItem('jumper_user', found.label);
+  sessionStorage.setItem('ivonne_user', found.label);
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
   document.getElementById('badge-username').textContent = found.label;
@@ -506,13 +506,13 @@ function doLogin() {
 }
 
 function doLogout() {
-  sessionStorage.removeItem('jumper_user');
+  sessionStorage.removeItem('ivonne_user');
   location.reload();
 }
 
 // Auto-login se já autenticado nesta sessão
 window.addEventListener('DOMContentLoaded', () => {
-  const saved = sessionStorage.getItem('jumper_user');
+  const saved = sessionStorage.getItem('ivonne_user');
   if (saved) {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';
@@ -527,13 +527,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // ── Configurações ───────────────────────────────────────────────────────
 function loadConfig() {
-  document.getElementById('cfg-prefix').value   = localStorage.getItem('jumper_prefix')   || 'JUMPER';
-  document.getElementById('cfg-validity').value = localStorage.getItem('jumper_validity') || '31/07/2026';
+  document.getElementById('cfg-prefix').value   = localStorage.getItem('ivonne_prefix')   || 'IVONNE';
+  document.getElementById('cfg-validity').value = localStorage.getItem('ivonne_validity') || '31/07/2026';
 }
 
 function saveConfig() {
-  localStorage.setItem('jumper_prefix',   document.getElementById('cfg-prefix').value.trim());
-  localStorage.setItem('jumper_validity', document.getElementById('cfg-validity').value.trim());
+  localStorage.setItem('ivonne_prefix',   document.getElementById('cfg-prefix').value.trim());
+  localStorage.setItem('ivonne_validity', document.getElementById('cfg-validity').value.trim());
   const msg = document.getElementById('save-msg');
   msg.style.display = 'inline';
   setTimeout(() => msg.style.display = 'none', 2500);
@@ -658,7 +658,7 @@ function exportCSV() {
   const blob = new Blob(['\ufeff'+csv], { type: 'text/csv;charset=utf-8;' });
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
-  a.href = url; a.download = `jumper_clientes_${new Date().toISOString().slice(0,10)}.csv`;
+  a.href = url; a.download = `ivonne_clientes_${new Date().toISOString().slice(0,10)}.csv`;
   a.click(); URL.revokeObjectURL(url);
 }
 

@@ -12,7 +12,7 @@ interface FormData {
 
 // ─── CONFIGURAÇÕES DO CUPOM ────────────────────────────────────────────────
 // Altere estas variáveis para mudar o prefixo do código e a validade do cupom
-const COUPON_PREFIX = 'JUMPER';          // prefixo do código gerado
+const COUPON_PREFIX = 'IVONNE';          // prefixo do código gerado
 const COUPON_VALID_UNTIL = '31/07/2026'; // data de validade exibida ao cliente
 // ──────────────────────────────────────────────────────────────────────────
 
